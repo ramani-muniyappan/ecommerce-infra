@@ -1,0 +1,25 @@
+# Local PostgreSQL for ecommerce services (product-service, future order/inventory services, etc.)
+# From this repo: docker compose up -d
+# JDBC example: jdbc:postgresql://localhost:5432/products — user/password: ecommerce
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce-postgres
+    environment:
+      POSTGRES_USER: ecommerce
+      POSTGRES_PASSWORD: ecommerce
+      POSTGRES_DB: products
+    ports:
+      - "5432:5432"
+    volumes:
+      - ecommerce-pgdata:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommerce -d products"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  ecommerce-pgdata:
