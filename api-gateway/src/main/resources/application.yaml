@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    routes:
+      - id: ecommerce-api
+        uri: lb://ecommerce-api
+        predicates:
+          - Path=/api/**
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations[/**]:
+              allowed-origin-patterns:
+                  - http://localhost:5173
+                  - http://127.0.0.1:5173
+              allowed-methods:
+                - GET
+                - POST
+                - PUT
+                - PATCH
+                - DELETE
+                - OPTIONS
+              allowed-headers: "*"
+              allow-credentials: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+
