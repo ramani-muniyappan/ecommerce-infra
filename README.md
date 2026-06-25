@@ -15,5 +15,3 @@ docker compose up -d
 - **Extra DBs** (created on first init): `orders`, `inventory` — edit `postgres/init/02-additional-databases.sql` to add more
 
 Add databases by extending that SQL file, then recreate the volume (`docker compose down -v`) if you need scripts to re-run.
-
-testing
